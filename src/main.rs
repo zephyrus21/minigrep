@@ -6,17 +6,19 @@ struct Config {
     filename: String,
 }
 
-fn parse_config(args: &[String]) -> Config {
-    let query: String = args[1].clone();
-    let filename: String = args[2].clone();
+impl Config {
+    fn new(args: &[String]) -> Result<Config, &str> {
+        let query: String = args[1].clone();
+        let filename: String = args[2].clone();
 
-    Config { query, filename }
+        Ok(Config { query, filename })
+    }
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let config = parse_config(&args);
+    let config = Config::new(&args).unwrap_or_else();
 
     println!("Searchinng for {}", config.query);
     println!("In file {}", config.filename);
